@@ -1,0 +1,1 @@
+INSERT INTO flights(start, destination, duration) VALUES('Gothenburg', 'Paris', 180);
