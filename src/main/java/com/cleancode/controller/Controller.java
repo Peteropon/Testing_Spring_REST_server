@@ -39,4 +39,10 @@ public class Controller {
             e.printStackTrace();
         }
     }
+
+    @PostMapping("/flights")
+    public Flight createFlight(@RequestBody Flight newFlight) {
+        flightService.create(newFlight);
+        return newFlight;
+    }
 }

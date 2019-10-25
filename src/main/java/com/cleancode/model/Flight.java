@@ -8,11 +8,16 @@ import java.util.Objects;
 public class Flight {
 
     @Id
-    @GeneratedValue(strategy = GenerationType.AUTO)
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
+    @Column(name = "start")
     private String start;
+
+    @Column(name = "destination")
     private String destination;
+
+    @Column(name = "duration")
     private int duration;
 
     public Flight(Long id, String start, String destination, int duration) {

@@ -29,4 +29,9 @@ public class FlightService implements IFlightService{
     public void deleteFlightById(long id) {
         repository.deleteById(id);
     }
+
+    @Override
+    public Flight create(Flight newFlight) {
+        return repository.save(newFlight);
+    }
 }
