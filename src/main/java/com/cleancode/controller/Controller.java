@@ -29,4 +29,14 @@ public class Controller {
     public Flight findFlightById(@PathVariable long id) {
         return flightService.findFlightById(id);
     }
+
+    @DeleteMapping("/flights/{id}")
+    public void deleteFlight(@PathVariable long id) {
+        try {
+            flightService.findFlightById(id);
+            flightService.deleteFlightById(id);
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+    }
 }

@@ -1,6 +1,7 @@
 package com.cleancode.model;
 
 import javax.persistence.*;
+import java.util.Objects;
 
 @Entity
 @Table(name = "flights")
@@ -54,5 +55,21 @@ public class Flight {
 
     public void setDuration(int duration) {
         this.duration = duration;
+    }
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
+        Flight flight = (Flight) o;
+        return duration == flight.duration &&
+                Objects.equals(id, flight.id) &&
+                Objects.equals(start, flight.start) &&
+                Objects.equals(destination, flight.destination);
+    }
+
+    @Override
+    public int hashCode() {
+        return Objects.hash(id, start, destination, duration);
     }
 }

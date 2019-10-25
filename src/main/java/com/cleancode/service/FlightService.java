@@ -24,4 +24,9 @@ public class FlightService implements IFlightService{
     public Flight findFlightById(long l) {
         return repository.findFlightById(l);
     }
+
+    @Override
+    public void deleteFlightById(long id) {
+        repository.deleteById(id);
+    }
 }

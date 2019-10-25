@@ -6,6 +6,6 @@ import java.util.List;
 
 public interface IFlightService {
     List<Flight> findAll();
-
-    Flight findFlightById(long l);
+    Flight findFlightById(long id);
+    void deleteFlightById(long id);
 }
