@@ -65,6 +65,8 @@ public class ControllerTest {
 
     @Test
     public void testPostCallsCreateFlight() {
+        controller.createFlight(f);
 
+        verify(mockRepo).save(f);
     }
 }
