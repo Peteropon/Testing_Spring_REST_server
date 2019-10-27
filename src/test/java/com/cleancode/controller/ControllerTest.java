@@ -53,17 +53,6 @@ public class ControllerTest {
     }
 
     @Test
-    public void testDeleteFlightCallsDeleteById() {
-        List<Flight> mockedList = new ArrayList<>();
-        mockedList.add(new Flight(1L, "Gothenburg", "Paris", 120));
-        mockedList.add(new Flight(2L, "Gothenburg", "Stockholm", 100));
-        when(mockService.findAll()).thenReturn(mockedList);
-        controller.deleteFlight(1);
-
-        verify(mockRepo).deleteById(1L);
-    }
-
-    @Test
     public void testPostCallsCreateFlight() {
         controller.createFlight(f);
 

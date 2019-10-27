@@ -5,6 +5,7 @@ import com.cleancode.repository.FlightRepository;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
+import java.util.Optional;
 
 @Service
 public class FlightService implements IFlightService{
@@ -21,12 +22,17 @@ public class FlightService implements IFlightService{
     }
 
     @Override
-    public Flight findFlightById(long l) {
-        return repository.findFlightById(l);
+    public Flight findFlightById(Long id) {
+        return repository.findFlightById(id);
     }
 
     @Override
-    public void deleteFlightById(long id) {
+    public Optional<Flight> findById(Long id) {
+        return repository.findById(id);
+    }
+
+    @Override
+    public void deleteFlightById(Long id) {
         repository.deleteById(id);
     }
 
