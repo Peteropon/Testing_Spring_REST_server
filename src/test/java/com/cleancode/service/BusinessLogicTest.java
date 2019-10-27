@@ -55,7 +55,7 @@ public class BusinessLogicTest {
         mockList.add(new Flight(6L, "Krakow", "Gothenburg", 50));
         when(mockService.findAll()).thenReturn(mockList);
         List<Flight> expectedList = mockLogic.getFlightsFrom("Helsinki");
-        assertTrue("The list is not empty", expectedList.isEmpty());
+        assertTrue("Expected an empty list but list is not empty", expectedList.isEmpty());
     }
 
 }

@@ -1,5 +1,6 @@
 package com.cleancode.controller;
 
+import com.cleancode.FlightNotFoundException;
 import com.cleancode.model.Flight;
 import com.cleancode.repository.FlightRepository;
 import com.cleancode.service.FlightService;
@@ -21,8 +22,7 @@ import org.springframework.test.web.servlet.ResultMatcher;
 
 import static org.assertj.core.internal.bytebuddy.matcher.ElementMatchers.is;
 import static org.mockito.Mockito.*;
-import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
-import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
+import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.*;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
 @RunWith(SpringRunner.class)
@@ -52,9 +52,7 @@ public class ControllerMvcTest {
     }
 
     @Test
-    @Ignore
-    public void whenFlightNotFoundShouldReturnNotFound() throws Exception {
-        when(flightService.findFlightById(5)).thenThrow(new Exception());
+    public void whenFlightNotFoundShouldReturn404() throws Exception {
         mockMvc.perform(get("http://localhost:7080/flights/{id}", 5L))
                 .andExpect(status().isNotFound());
         verify(flightService, times(1)).findFlightById(5);
@@ -74,5 +72,11 @@ public class ControllerMvcTest {
 
         mockMvc.perform(post("http://localhost:7080/flights/").contentType("application/json")
                 .content(objectMapper.writeValueAsBytes(flight))).andExpect(status().isBadRequest());
+    }
+
+    @Test
+    public void whenFlightNotFoundDeleteReturns404() throws Exception {
+        mockMvc.perform(delete("http://localhost:7080/flights/{id}", 5L))
+                .andExpect(status().isNotFound());
     }
 }

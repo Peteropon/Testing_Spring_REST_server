@@ -1,5 +1,6 @@
 package com.cleancode.controller;
 
+import com.cleancode.FlightNotFoundException;
 import com.cleancode.model.Flight;
 import com.cleancode.service.FlightBusinessLogic;
 import com.cleancode.service.IFlightService;
@@ -29,16 +30,21 @@ public class Controller {
 
     @GetMapping("/flights/{id}")
     public Flight findFlightById(@PathVariable long id) {
-        return flightService.findFlightById(id);
+        Flight result = flightService.findFlightById(id);
+        if (result == null) {
+            throw new FlightNotFoundException("Flight not found");
+        } else {
+            return result;
+        }
     }
 
     @DeleteMapping("/flights/{id}")
     public void deleteFlight(@PathVariable long id) {
-        try {
-            flightService.findFlightById(id);
+        Flight result = flightService.findFlightById(id);
+        if (result == null) {
+            throw new FlightNotFoundException("Flight not found");
+        } else {
             flightService.deleteFlightById(id);
-        } catch (Exception e) {
-            e.printStackTrace();
         }
     }
 
