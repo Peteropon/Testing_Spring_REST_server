@@ -1,6 +1,7 @@
 package com.cleancode.service;
 
 import com.cleancode.model.Flight;
+import org.junit.Before;
 import org.junit.Test;
 
 import java.util.ArrayList;
@@ -35,6 +36,26 @@ public class BusinessLogicTest {
             Flight expectedFlight = expectedList.get(i);
             assertThat(expectedFlight, is(actualList.get(i)));
         }
+    }
+
+    @Test(expected = IllegalArgumentException.class)
+    public void getFlightFromShouldThrowExceptionWhenStartIsEmpty() {
+        FlightService mockService = mock(FlightService.class);
+        FlightBusinessLogic mockLogic = new FlightBusinessLogic(mockService);
+        mockLogic.getFlightsFrom("");
+    }
+
+    @Test
+    public void getFlightsFromShouldReturnEmptyListWhenThereIsNoSuchFlight() {
+        FlightService mockService = mock(FlightService.class);
+        FlightBusinessLogic mockLogic = new FlightBusinessLogic(mockService);
+        List<Flight> mockList = new ArrayList<>();
+        mockList.add(new Flight(4L, "Gothenburg", "Cairo", 220));
+        mockList.add(new Flight(5L, "Minsk", "Berlin", 50));
+        mockList.add(new Flight(6L, "Krakow", "Gothenburg", 50));
+        when(mockService.findAll()).thenReturn(mockList);
+        List<Flight> expectedList = mockLogic.getFlightsFrom("Helsinki");
+        assertTrue("The list is not empty", expectedList.isEmpty());
     }
 
 }

@@ -1,6 +1,10 @@
 package com.cleancode.model;
 
+import org.springframework.lang.NonNull;
+
 import javax.persistence.*;
+import javax.validation.constraints.NotNull;
+import javax.validation.constraints.Size;
 import java.util.Objects;
 
 @Entity
@@ -11,13 +15,13 @@ public class Flight {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
-    @Column(name = "start")
+    @Size(min = 2, max = 100)
     private String start;
 
-    @Column(name = "destination")
+    @Size(min = 2, max = 100)
     private String destination;
 
-    @Column(name = "duration")
+    @NonNull
     private int duration;
 
     public Flight(Long id, String start, String destination, int duration) {

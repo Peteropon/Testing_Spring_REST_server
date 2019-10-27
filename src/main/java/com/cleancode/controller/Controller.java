@@ -1,9 +1,11 @@
 package com.cleancode.controller;
 
 import com.cleancode.model.Flight;
+import com.cleancode.service.FlightBusinessLogic;
 import com.cleancode.service.IFlightService;
 import org.springframework.web.bind.annotation.*;
 
+import javax.validation.Valid;
 import java.util.List;
 
 @RestController
@@ -41,8 +43,14 @@ public class Controller {
     }
 
     @PostMapping("/flights")
-    public Flight createFlight(@RequestBody Flight newFlight) {
+    public Flight createFlight(@Valid @RequestBody Flight newFlight) {
         flightService.create(newFlight);
         return newFlight;
+    }
+
+    @GetMapping("/flights/from/{start}")
+    public List<Flight> getFlightsFrom(@PathVariable String start) {
+        FlightBusinessLogic logic = new FlightBusinessLogic(flightService);
+        return logic.getFlightsFrom(start);
     }
 }
