@@ -12,4 +12,10 @@ public class ErrorHandler {
     public String handleFlightNotFoundException(FlightNotFoundException exception) {
         return exception.getMessage();
     }
+
+    @ExceptionHandler(InvalidInputException.class)
+    @ResponseStatus(HttpStatus.BAD_REQUEST)
+    public String handleInvalidInputException(InvalidInputException exception) {
+        return exception.getMessage();
+    }
 }

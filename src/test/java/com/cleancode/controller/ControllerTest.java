@@ -19,7 +19,7 @@ import static org.mockito.Mockito.*;
 
 public class ControllerTest {
 
-    Flight f = new Flight();
+    Flight f = new Flight(1L, "Rome", "Perth", 400);
     FlightRepository mockRepo = mock(FlightRepository.class);
     FlightService mockService = new FlightService(mockRepo);
     Controller controller = new Controller(mockService);
@@ -29,15 +29,7 @@ public class ControllerTest {
     }
 
     @Test
-    public void testFindOneFlightGet() {
-        f.setId(1L);
-        when(mockService.findFlightById(1L)).thenReturn(f);
-        Flight flight = controller.findFlightById(1L);
-        assertEquals(1L, flight.getId().longValue());
-    }
-
-    @Test
-    public void testFindAllFlightsGet() {
+    public void findAllFlightsGet() {
         List<Flight> mockedList = new ArrayList<>();
         mockedList.add(new Flight(1L, "Gothenburg", "Paris", 120));
         mockedList.add(new Flight(2L, "Gothenburg", "Stockholm", 100));
@@ -53,9 +45,10 @@ public class ControllerTest {
     }
 
     @Test
-    public void testPostCallsCreateFlight() {
+    public void postCallsCreateFlight() {
         controller.createFlight(f);
 
         verify(mockRepo).save(f);
     }
+
 }

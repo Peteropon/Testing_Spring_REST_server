@@ -4,10 +4,12 @@ import com.cleancode.FlightNotFoundException;
 import com.cleancode.model.Flight;
 import com.cleancode.service.FlightBusinessLogic;
 import com.cleancode.service.IFlightService;
+import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.*;
 
 import javax.validation.Valid;
 import java.util.List;
+import java.util.Optional;
 
 @RestController
 public class Controller {
@@ -29,26 +31,17 @@ public class Controller {
     }
 
     @GetMapping("/flights/{id}")
-    public Flight findFlightById(@PathVariable Long id) {
-        Flight result = flightService.findFlightById(id);
-        if (result == null) {
-            throw new FlightNotFoundException("Flight not found");
-        } else {
-            return result;
-        }
+    public Optional<Flight> findFlightById(@PathVariable Long id) {
+        return flightService.findById(id);
     }
 
     @DeleteMapping("/flights/{id}")
     public void deleteFlight(@PathVariable Long id) {
-        Flight result = flightService.findFlightById(id);
-        if (result == null) {
-            throw new FlightNotFoundException("Flight not found");
-        } else {
-            flightService.deleteFlightById(id);
-        }
+        flightService.deleteFlightById(id);
     }
 
     @PostMapping("/flights")
+    @ResponseStatus(HttpStatus.CREATED)
     public Flight createFlight(@Valid @RequestBody Flight newFlight) {
         flightService.create(newFlight);
         return newFlight;
@@ -74,6 +67,8 @@ public class Controller {
     @GetMapping("/flights/from/{start}")
     public List<Flight> getFlightsFrom(@PathVariable String start) {
         FlightBusinessLogic logic = new FlightBusinessLogic(flightService);
-        return logic.getFlightsFrom(start);
+        List<Flight> result = logic.getFlightsFrom(start);
+        if (result.isEmpty()) throw new FlightNotFoundException("Flight not found");
+        else return result;
     }
 }

@@ -32,26 +32,19 @@ public class ControllerMvcTest {
     @Test
     public void shouldReturnFlight() throws Exception {
         Flight found = new Flight(1L, "Gothenburg", "Paris", 120);
-        when(flightService.findFlightById(1L)).thenReturn(found);
+        when(flightService.findById(1L)).thenReturn(java.util.Optional.of(found));
 
         mockMvc.perform(get("http://localhost:7080/flights/{id}", 1L))
                 .andExpect(status().isOk());
-        verify(flightService, times(1)).findFlightById(1L);
+        verify(flightService, times(1)).findById(1L);
     }
 
     @Test
-    public void whenFlightNotFoundShouldReturn404() throws Exception {
-        mockMvc.perform(get("http://localhost:7080/flights/{id}", 5L))
-                .andExpect(status().isNotFound());
-        verify(flightService, times(1)).findFlightById(5L);
-    }
-
-    @Test //tests the serialisation of an object sent with a post request
-    public void whenValidInputCreateFlightReturns200() throws Exception {
+    public void whenValidInputCreateFlightReturns201() throws Exception {
         Flight flight = new Flight(4L, "Gothenburg", "Cairo", 220);
 
         mockMvc.perform(post("http://localhost:7080/flights/").contentType("application/json")
-        .content(objectMapper.writeValueAsBytes(flight))).andExpect(status().isOk());
+        .content(objectMapper.writeValueAsBytes(flight))).andExpect(status().isCreated());
     }
 
     @Test
@@ -59,12 +52,18 @@ public class ControllerMvcTest {
         Flight flight = new Flight(4L, "", "Cairo", 60);
 
         mockMvc.perform(post("http://localhost:7080/flights/").contentType("application/json")
-                .content(objectMapper.writeValueAsBytes(flight))).andExpect(status().isBadRequest());
+                .content(objectMapper.writeValueAsString(flight))).andExpect(status().isBadRequest());
     }
 
     @Test
-    public void whenFlightNotFoundDeleteReturns404() throws Exception {
-        mockMvc.perform(delete("http://localhost:7080/flights/{id}", 5L))
-                .andExpect(status().isNotFound());
+    public void whenValidPutUpdatesFlightAndReturns200() throws Exception {
+        Flight found = new Flight(1L, "Gothenburg", "Paris", 120);
+        Flight newFlight = new Flight(2L, "Gothenburg", "Cairo", 160);
+        when(flightService.findById(1L)).thenReturn(java.util.Optional.of(found));
+
+        mockMvc.perform(put("http://localhost:7080/flights/1")
+                .contentType("application/json")
+                .content(objectMapper.writeValueAsString(newFlight)))
+                .andExpect(status().isOk());
     }
 }

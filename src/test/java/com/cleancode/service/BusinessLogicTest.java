@@ -1,7 +1,7 @@
 package com.cleancode.service;
 
+import com.cleancode.InvalidInputException;
 import com.cleancode.model.Flight;
-import org.junit.Before;
 import org.junit.Test;
 
 import java.util.ArrayList;
@@ -38,7 +38,7 @@ public class BusinessLogicTest {
         }
     }
 
-    @Test(expected = IllegalArgumentException.class)
+    @Test(expected = InvalidInputException.class)
     public void getFlightFromShouldThrowExceptionWhenStartIsEmpty() {
         FlightService mockService = mock(FlightService.class);
         FlightBusinessLogic mockLogic = new FlightBusinessLogic(mockService);
